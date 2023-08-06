@@ -1,12 +1,13 @@
 {% extends 'main/base.html' %}
+{% load static %}
 {% block page_content %}
   <div class="container">
     <h1>Finding Animals (대전)</h1>
-    <p>유기동물을 찾아줍니다</p>
+    <p>보호 중인 유기동물을 찾아보세요</p>
     <br />
     <form onsubmit="return false;">
       <div class="options">
-        동물 종류&nbsp;<select name="animal" id="animal">
+        동물 종류&nbsp;<select name="animal" id="classification">
           <option value="1">강아지</option>
           <option value="2">고양이</option>
           <option value="3">기타</option>
@@ -33,19 +34,19 @@
       </div>
       <br />
       <div class="options">
-        종 구분&nbsp;<select>
+        종 구분&nbsp;<select id="species">
           <option value="">전체</option>
           {% for x in species %}
-            <option value="x">{{ x }}</option>
+            <option value="{{x}}">{{ x }}</option>
           {% endfor %}
         </select>
       </div>
       <br />
       <div class="options">
-        털 색&nbsp;<select>
+        털 색&nbsp;<select id="haircolor">
           <option value="">전체</option>
           {% for x in haircolor %}
-            <option value="x">{{ x }}</option>
+            <option value="{{x}}">{{ x }}</option>
           {% endfor %}
         </select>
       </div>
@@ -58,12 +59,22 @@
         몸무게(kg)&nbsp;<input type="number" name="weight" id="weight" placeholder="숫자를 입력하세요" />
       </div>
       <br />
-      <div class="submit" style="text-align: center;">
+      <div class="submit" >
         <button type="submit" id="btn">검색</button>
       </div>
     </form>
 
     <p id="predict">검색 결과</p>
-    <div id="result-container"></div>
+    <div id="search-container">
+      <div id="page-count">
+        <button id="btn-prev">◀</button>
+        <span id="page">1</span> / <span id="total-page">1</span>
+        <button id="btn-next">▶</button>
+      </div>
+      <div id="result-container">
+        
+      </div>
+    </div>
   </div>
+  <script type="text/javascript" src="{% static "main/js/finding_animals.js" %}"></script>
 {% endblock %}

@@ -1,4 +1,6 @@
+import json
 from django.shortcuts import render
+from django.http import JsonResponse
 from .apps import MainConfig
 import pandas as pd
 import numpy as np
@@ -19,12 +21,6 @@ def index(request):
 
 def search(request):
     if request.method == "POST":
-        params = {
-            "classfication": "2",
-            "gender": "1",
-            "gu": "1",
-            "age": "3",
-            "weight": "5",
-        }
-        data = MainConfig.animal_data.search(params)
-        return render(request, "main/search.html", params)
+        params = json.loads(request.body)
+        data, count, total_count = MainConfig.animal_data.search(params)
+        return JsonResponse({"result": data, "count": count, "total_count": total_count}, safe=False)

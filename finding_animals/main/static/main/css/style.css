@@ -5,7 +5,7 @@
     --font-size: 20px;
     --font-weight: bold;
     --border-radius: 50px;
-    --box-shadow: 0px 5px 15px #0006;
+    --box-shadow: 0px 5px 15px #0002;
     --transition: 0.2s;
     --cursor: crosshair;
 }
@@ -66,11 +66,17 @@ input:focus {
     outline: none;
 }
 
-#result-container {
+#search-container {
     margin: 0 auto;
-    width: 50%;
-    text-align: left;
+    width: 80%;
+    text-align: center;
     background-color: var(--sub-color);
     padding: 5%;
     border-radius: 50px;
+}
+
+.result-img > img {
+    height: 256px;
+    border-radius: 15px;
+    box-shadow: var(--box-shadow);
 }
