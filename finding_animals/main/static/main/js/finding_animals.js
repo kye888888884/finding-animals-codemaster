@@ -53,17 +53,28 @@ function search() {
         result_container.innerHTML = "";
         result = JSON.parse(data.result);
         for (let i = 0; i < data.count; i++) {
+            let src;
+            if (result[i].filePath != null) {
+                src = image_base_url + result[i].filePath;
+            } else {
+                src = $("#no-image").text();
+            }
+
+            let desc = result[i].species;
+            if (result[i].rescueDate != null) {
+                desc += " / " + result[i].rescueDate + " 발견";
+            }
+
             let div = document.createElement("div");
             div.className = "result";
             div.innerHTML = `
             <div class="result-img">
-                <img src="${
-                    image_base_url + result[i].filePath
-                }" alt="result-img">
+                <img src="${src}" alt="result-img">
             </div>
             <div class="result-info">
                 <div class="result-info-title">
-                    <h3>${result[i].animalSeq}</h3>
+                    <h3>${desc}</h3>
+                    <div style="margin-bottom: 20px">발견 장소: ${result[i].foundPlace}</div>
                 </div>
             </div>
             `;

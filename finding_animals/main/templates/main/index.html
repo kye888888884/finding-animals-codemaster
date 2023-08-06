@@ -1,6 +1,7 @@
 {% extends 'main/base.html' %}
 {% load static %}
 {% block page_content %}
+  <div id="no-image" hidden>{% static "main/images/no-image.png"%}</div>
   <div class="container">
     <h1>Finding Animals (대전)</h1>
     <p>보호 중인 유기동물을 찾아보세요</p>
@@ -52,11 +53,11 @@
       </div>
       <br />
       <div class="options">
-        나이(세)&nbsp;<input type="number" name="age" id="age" placeholder="숫자를 입력하세요" />
+        나이(세)&nbsp;<input type="number" name="age" id="age" placeholder="미구현" />
       </div>
       <br />
       <div class="options">
-        몸무게(kg)&nbsp;<input type="number" name="weight" id="weight" placeholder="숫자를 입력하세요" />
+        몸무게(kg)&nbsp;<input type="number" name="weight" id="weight" placeholder="미구현" />
       </div>
       <br />
       <div class="submit" >
@@ -71,9 +72,7 @@
         <span id="page">1</span> / <span id="total-page">1</span>
         <button id="btn-next">▶</button>
       </div>
-      <div id="result-container">
-        
-      </div>
+      <div id="result-container"></div>
     </div>
   </div>
   <script type="text/javascript" src="{% static "main/js/finding_animals.js" %}"></script>
