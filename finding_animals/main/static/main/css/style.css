@@ -46,18 +46,20 @@ button:hover {
     background-color: #ccc;
 }
 
-#predict {
-    font-size: 32px;
-}
-
-#text {
+form {
+    margin: 0 auto;
+    width: 50%;
+    text-align: left;
     background-color: var(--sub-color);
-    padding: 30px;
-    font-size: 20px;
+    padding: 5%;
     border-radius: 50px;
-    border: none;
-    box-shadow: 0px 5px 15px #0002;
-    width: 80%;
+}
+form > .options {
+    display: inline-block;
+    margin: 1%;
+}
+form > .submit {
+    text-align: center;
 }
 
 input:focus {
@@ -66,11 +68,9 @@ input:focus {
 
 #result-container {
     margin: 0 auto;
-    padding: 5%;
-    width: 512px;
-    height: 512px;
-    border-radius: 15px;
-    box-shadow: 0px 5px 15px #0006;
+    width: 50%;
+    text-align: left;
     background-color: var(--sub-color);
-    transition: 0.2s box-shadow;
+    padding: 5%;
+    border-radius: 50px;
 }
