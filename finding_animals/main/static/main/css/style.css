@@ -1,0 +1,76 @@
+:root {
+    --main-color: rgb(132, 212, 243);
+    --sub-color: white;
+    --font-color: black;
+    --font-size: 20px;
+    --font-weight: bold;
+    --border-radius: 50px;
+    --box-shadow: 0px 5px 15px #0006;
+    --transition: 0.2s;
+    --cursor: crosshair;
+}
+
+body {
+    padding: 5%;
+    /* 파란색 계열의 그라데이션 배경 색상 */
+    background: linear-gradient(135deg, var(--main-color) 0%, white 100%);
+}
+
+.container {
+    text-align: center;
+    margin: 0 auto;
+    padding: 5%;
+}
+
+h1 {
+    font-size: 48px;
+    color: var(--font-color);
+}
+
+p {
+    font-size: 20px;
+}
+
+button {
+    margin: 5%;
+    padding: 2%;
+    border-radius: 50pt;
+    background-color: var(--sub-color);
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--font-color);
+    transition: 0.2s background-color;
+}
+
+button:hover {
+    background-color: #ccc;
+}
+
+#predict {
+    font-size: 32px;
+}
+
+#text {
+    background-color: var(--sub-color);
+    padding: 30px;
+    font-size: 20px;
+    border-radius: 50px;
+    border: none;
+    box-shadow: 0px 5px 15px #0002;
+    width: 80%;
+}
+
+input:focus {
+    outline: none;
+}
+
+#result-container {
+    margin: 0 auto;
+    padding: 5%;
+    width: 512px;
+    height: 512px;
+    border-radius: 15px;
+    box-shadow: 0px 5px 15px #0006;
+    background-color: var(--sub-color);
+    transition: 0.2s box-shadow;
+}

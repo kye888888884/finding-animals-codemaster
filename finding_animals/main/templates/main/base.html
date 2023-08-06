@@ -1,0 +1,16 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="utf-8">
+        <title>Finding Animals</title>
+        <link rel="stylesheet" href="{% static 'main/css/style.css' %}" />
+        <script defer src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    </head>
+    <body>
+        {% csrf_token %}
+        {% block page_content %}
+        {% endblock %}
+        <script defer src="{% static 'main/js/logomaker.js' %}"></script>
+    </body>
+</html>

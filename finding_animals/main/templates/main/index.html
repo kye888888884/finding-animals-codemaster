@@ -1,0 +1,17 @@
+{% extends 'main/base.html' %}
+{% block page_content %}
+  <div class="container">
+    <h1>Finding Animals</h1>
+    <p>유기동물을 찾아줍니다</p>
+    <br />
+    <form onsubmit="return false;">
+      <p>
+        <input type="text" id="text" placeholder="텍스트를 입력하세요" />
+      </p>
+      <button type="submit" id="btn">만들기</button>
+    </form>
+    <div></div>
+    <p id="predict">결과</p>
+    <div id="result-container"></div>
+  </div>
+{% endblock %}
