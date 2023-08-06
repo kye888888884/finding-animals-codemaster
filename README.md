@@ -2,6 +2,8 @@
 
 유기동물 검색 서비스
 
+> 데모 사이트: [finding-animals.kro.kr](http://finding-animals.kro.kr:8000/)
+
 ---
 
 # 프로젝트 소개

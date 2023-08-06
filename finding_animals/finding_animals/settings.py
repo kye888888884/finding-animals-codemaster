@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-df!tebl-lbu1o5bdc(nyvcnlldoag(b%=tyn97_@l&js&gsay%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["finding-animals.kro.kr"]
 
 
 # Application definition
