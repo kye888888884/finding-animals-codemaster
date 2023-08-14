@@ -17,9 +17,9 @@
       <br />
       <div class="options">
         성별&nbsp;<select name="gender" id="gender">
+          <option value="0">전체</option>
           <option value="1">암</option>
           <option value="2">수</option>
-          <option value="0">모름</option>
         </select>
       </div>
       <br />
@@ -36,10 +36,6 @@
       <br />
       <div class="options">
         종 구분&nbsp;<select id="species">
-          <option value="">전체</option>
-          {% for x in species %}
-            <option value="{{x}}">{{ x }}</option>
-          {% endfor %}
         </select>
       </div>
       <br />
@@ -60,6 +56,16 @@
         몸무게(kg)&nbsp;<input type="number" name="weight" id="weight" placeholder="미구현" />
       </div>
       <br />
+      <div class="options">
+        상태&nbsp;<select name="status" id="status">
+          <option value="1">공고중</option>
+          <option value="2">입양 가능</option>
+          <option value="3">기타</option>
+          <option value="4">종료</option>
+          <option value="0">전체</option>
+        </select>
+      </div>
+      <br />
       <div class="submit" >
         <button type="submit" id="btn">검색</button>
       </div>
@@ -75,5 +81,6 @@
       <div id="result-container"></div>
     </div>
   </div>
+  <script type="text/javascript" src="{% static "main/js/animals_data.js" %}"></script>
   <script type="text/javascript" src="{% static "main/js/finding_animals.js" %}"></script>
 {% endblock %}

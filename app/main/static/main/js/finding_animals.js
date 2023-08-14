@@ -3,6 +3,8 @@ const btn_prev = document.getElementById("btn-prev");
 const btn_next = document.getElementById("btn-next");
 const total_page = document.getElementById("total-page");
 const result_container = document.getElementById("result-container");
+const input_classification = document.getElementById("classification");
+const input_species = document.getElementById("species");
 const image_base_url = "http://www.daejeon.go.kr/FileUpload/ANI/";
 
 btn.addEventListener("click", () => {
@@ -25,6 +27,28 @@ btn_next.addEventListener("click", () => {
     }
 });
 
+// #classification의 값이 바뀌면 #species의 값을 바꿔준다.
+input_classification.addEventListener("change", change_species);
+
+function add_option(select, value, text) {
+    let option = document.createElement("option");
+    option.value = value;
+    option.innerText = text;
+    select.appendChild(option);
+}
+
+function change_species() {
+    let classification = input_classification.value;
+    input_species.innerHTML = "";
+    spec_list = specs[classification - 1];
+    add_option(input_species, "", "전체");
+    for (let i = 0; i < spec_list.length; i++) {
+        add_option(input_species, spec_list[i], spec_list[i]);
+    }
+}
+
+change_species();
+
 function search() {
     let csrftoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
 
@@ -36,6 +60,7 @@ function search() {
         haircolor: $("#haircolor").val(),
         age: $("#age").val(),
         weight: $("#weight").val(),
+        status: $("#status").val(),
         page: $("span#page").text(),
     };
 
@@ -61,6 +86,7 @@ function search() {
             }
 
             let desc = result[i].species;
+            desc += `(${status_list[result[i].adoptionStatusCd]})`;
             if (result[i].rescueDate != null) {
                 desc += " / " + result[i].rescueDate + " 발견";
             }

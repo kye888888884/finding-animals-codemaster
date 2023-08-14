@@ -1,6 +1,12 @@
 import pandas as pd
 
 PAGE_COUNT = 5
+status_dict = {
+    "1": "[1]", # 공고중
+    "2": "[2]", # 입양가능
+    "3": "[3,4,7,8,9,11,12]", # 기타
+    "4": "[5,6,10]" # 종료
+}
 
 # 유기동물 데이터를 불러오는 클래스
 class AnimalData:
@@ -33,6 +39,9 @@ class AnimalData:
             expr += f" and species == '{params['species']}'"
         if params["haircolor"] != "":
             expr += f" and hairColor == '{params['haircolor']}'"
+        if params["status"] != "0":
+            expr += f" and adoptionStatusCd in {status_dict[params['status']]}"
+            
         
         df_q = self.data.query(expr)
         total_count = len(df_q)
