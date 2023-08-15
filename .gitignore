@@ -1,5 +1,7 @@
 info.js
 *.docx
 .vscode/
+key.*
 data/
 *.zip
+pictures/
