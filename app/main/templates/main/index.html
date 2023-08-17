@@ -2,27 +2,169 @@
 {% load static %}
 {% block page_content %}
   <div id="no-image" hidden>{% static "main/images/no-image.png"%}</div>
+  <nav class="navbar">
+    <div class="nav-links">
+        <div class="nav" id="title">
+            Finding Animals
+        </div>
+        <br />
+        <div class="nav">
+            <a href="https://www.daejeon.go.kr/ani">
+              <span class="icon material-symbols-outlined">
+                house
+              </span>
+              대전광역시 동물보호센터
+            </a>
+        </div>
+        <div class="nav">
+            <a href="https://github.com/kye888888884/finding-animals-codemaster">
+              <span class="icon material-symbols-outlined">
+                code
+              </span>
+              Github Page
+            </a>
+        </div>
+        <img id="logo" src="{% static "main/images/logo.png" %}" alt="">
+    </div>
+  </nav>
+
   <div class="container">
-    <h1>Finding Animals (대전)</h1>
-    <p>보호 중인 유기동물을 찾아보세요</p>
-    <br />
-    <form onsubmit="return false;">
-      <div class="options">
-        동물 종류&nbsp;<select name="animal" id="classification">
-          <option value="1">강아지</option>
-          <option value="2">고양이</option>
-          <option value="3">기타</option>
+    <p id="desc">
+      대전광역시 동물보호센터에서 보호 중인 유기동물을 찾아보세요
+    </p>
+    <div style="text-align: center">
+      <div class="input-container">
+        <div class="input-title">찾고 싶은 동물을 선택하세요</div>
+        <div class="cut-container">
+          <input
+              class="cut-input"
+              type="radio"
+              id="cut-radio1"
+              name="classification"
+              value="1"
+              checked
+          />
+          <label class="cut-label" for="cut-radio1">강아지</label>
+          <input
+              class="cut-input"
+              type="radio"
+              id="cut-radio2"
+              name="classification"
+              value="2"
+          />
+          <label class="cut-label" for="cut-radio2">고양이</label>
+          <input
+              class="cut-input"
+              type="radio"
+              id="cut-radio3"
+              name="classification"
+              value="3"
+          />
+          <label class="cut-label" for="cut-radio3">기타</label>
+
+
+        </div>
+      </div>
+      
+      <div class="input-container">
+        <div class="input-title">사진을 올려주세요</div>
+        <div class="upload-container">
+          <input type="file" name="file" id="file" hidden>
+          <label for="file" class="image1">
+            <div class="line">
+              <span class="upload-icon material-symbols-outlined">upload_file</span>
+              <br>사진을 올릴게요
+              <div class="upload-desc">사진과 닮은 동물을 찾습니다</div>
+            </div>
+          </label>
+          <button class="image2"><span class="upload-icon material-symbols-outlined">scan_delete</span><br>사진이 없어요
+            <div class="upload-desc">동물의 정보를 직접 입력합니다</div>
+          </button>
+        </div>
+      </div>
+
+      <div class="input-container">
+        <div class="input-title">어떤 종인가요?</div>
+        <select id="species">
         </select>
       </div>
-      <br />
-      <div class="options">
-        성별&nbsp;<select name="gender" id="gender">
-          <option value="0">전체</option>
-          <option value="1">암</option>
-          <option value="2">수</option>
-        </select>
+
+      <div class="input-container">
+        <div class="input-title">성별을 선택하세요</div>
+        <div class="cut-container">
+          <input
+              class="cut-input"
+              type="radio"
+              id="gender-radio1"
+              name="gender"
+              value="2"
+          />
+          <label class="cut-label" for="gender-radio1">암컷</label>
+          <input
+              class="cut-input"
+              type="radio"
+              id="gender-radio2"
+              name="gender"
+              value="1"
+          />
+          <label class="cut-label" for="gender-radio2">수컷</label>
+          <input
+              class="cut-input"
+              type="radio"
+              id="gender-radio3"
+              name="gender"
+              value="0"
+              checked
+          />
+          <label class="cut-label" for="gender-radio3">모름/둘다</label>
+        </div>
       </div>
-      <br />
+
+      <div class="input-container">
+        <div class="input-title">어떤 색깔의 털을 가지고 있나요?</div>
+        <div class="input-desc">(중복 선택 가능)</div>
+        <div class="color-container">
+          <button class="color onoff-button offon-button"  style="background-color: white;">흰색</button>
+          
+          <button class="color onoff-button offon-button" style="background-color: darkslategray; color: white;">검은색</button>
+            
+          <button class="color onoff-button offon-button" style="background-color: sienna; color: white;">갈색</button>
+            
+          <button class="color onoff-button offon-button" style="background-color: gold;">황색</button>
+            
+          <button class="color onoff-button offon-button" style="background-color: gray; color: white;">회색</button>
+            
+          <button class="color onoff-button offon-button" style="background-color: lightblue;">기타</button></div>
+        
+      </div>
+    
+      <div class="submit" >
+        <button type="submit" id="btn-submit">
+          <div class="submit-container">
+            <span class="submit-icon material-symbols-outlined">search</span>
+            <span class="submit-title">
+              <div class="line">검색하기</div>
+            </span>
+            <div class="submit-desc">입력 결과를 바탕으로 동물을 검색합니다</div>
+          </div>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="search-container" hidden>
+    <div id="filter-container">
+      <div class="options">
+      상태&nbsp;<select name="status" id="status">
+        <option value="1">공고중</option>
+        <option value="2">입양 가능</option>
+        <option value="3">기타</option>
+        <option value="4">종료</option>
+        <option value="0">전체</option>
+      </select>
+      </div>
+
       <div class="options">
         지역&nbsp;<select name="gu" id="gu">
           <option value="0">전체</option>
@@ -33,50 +175,13 @@
           <option value="5">대덕구</option>
         </select>
       </div>
-      <br />
-      <div class="options">
-        종 구분&nbsp;<select id="species">
-        </select>
-      </div>
-      <br />
-      <div class="options">
-        털 색&nbsp;
-        {% for key, value in haircolors.items %}
-        <input type="checkbox" class="colors" name="{{key}}" id="{{ forloop.counter0 }}">{{value}}
-          {% endfor %}
-      </div>
-      <br />
-      {% comment %} <div class="options">
-        나이(세)&nbsp;<input type="number" name="age" id="age" placeholder="미구현" />
-      </div>
-      <br />
-      <div class="options">
-        몸무게(kg)&nbsp;<input type="number" name="weight" id="weight" placeholder="미구현" />
-      </div> 
-      <br /> {% endcomment %}
-      <div class="options">
-        상태&nbsp;<select name="status" id="status">
-          <option value="1">공고중</option>
-          <option value="2">입양 가능</option>
-          <option value="3">기타</option>
-          <option value="4">종료</option>
-          <option value="0">전체</option>
-        </select>
-      </div>
-      <br />
-      <div class="submit" >
-        <button type="submit" id="btn">검색</button>
-      </div>
-    </form>
+    </div>
 
-    <p id="predict">검색 결과</p>
-    <div id="search-container">
-      <div id="page-count">
-        <button id="btn-prev">◀</button>
-        <span id="page">1</span> / <span id="total-page">1</span>
-        <button id="btn-next">▶</button>
+    <div id="result-container"></div>
+    <div id="loading-container">
+      <div class="loading">
+        불러오는 중입니다...
       </div>
-      <div id="result-container"></div>
     </div>
   </div>
   <script type="text/javascript" src="{% static "main/js/animals_data.js" %}"></script>

@@ -1,0 +1,205 @@
+/* Input Containers */
+.input-container {
+    margin: 50px auto;
+    position: relative;
+    padding: 30px;
+    width: 80%;
+    max-width: 800px;
+    border-radius: var(--border-radius);
+    background-color: var(--inputbox-color);
+}
+.input-title {
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 30px;
+    color: var(--font-color);
+}
+.input-desc {
+    font-size: 12pt;
+    font-weight: 200;
+    margin-top: 10px;
+}
+
+/* Cut button */
+
+.cut-container {
+    margin: auto;
+    height: 100%;
+    display: inline-flex;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+}
+.cut-input {
+    display: none;
+}
+.cut-label {
+    padding: 12px 20px;
+    font-size: 20pt;
+    font-weight: 600;
+    color: #fff;
+    background: rgb(157, 196, 228);
+    cursor: pointer;
+    transition: background 0.1s;
+}
+.cut-label:not(:last-of-type) {
+    border-right: 1px solid rgb(131, 167, 197);
+}
+.cut-label:hover {
+    background: rgb(169, 201, 228);
+}
+.cut-input:checked + .cut-label {
+    background: rgb(29, 134, 219);
+}
+
+/* Image Upload */
+
+.upload-container {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-evenly;
+    height: 250px;
+}
+
+.image1,
+.image2 {
+    font-family: "Gothic A1", sans-serif;
+    font-size: 20pt;
+    display: block;
+    color: darkslategray;
+    background: var(--main-light-color);
+    width: 250px;
+    padding: 0%;
+    height: 100%;
+    border: 0px solid;
+    border-radius: 50px;
+    font-weight: 800;
+    box-shadow: 0 10px 0px var(--main-color);
+    cursor: pointer;
+    transition: color 0.1s;
+    &:hover {
+        color: var(--main-color);
+    }
+}
+
+.line {
+    text-align: center;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.image2 {
+    display: inline-block;
+}
+
+.upload-icon {
+    display: block;
+    font-size: 100pt !important;
+    line-height: 0;
+    position: relative;
+    top: 4px;
+}
+
+.upload-desc {
+    font-size: 12pt;
+    font-weight: 200;
+    margin-top: 10px;
+}
+
+/* Species */
+select {
+    width: 200px;
+    border: 1px solid #c4c4c4;
+    box-sizing: border-box;
+    border-radius: 10px;
+    padding: 12px 13px;
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 16px;
+    font-size: 14pt;
+}
+
+select:focus {
+    border: 1px solid var(--main-color);
+    box-sizing: border-box;
+    border-radius: 10px;
+    outline: 3px solid #f8e4ff;
+    border-radius: 10px;
+}
+
+/* Hair Color */
+
+.color-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+button.color {
+    flex: 1 1 30%;
+    font-size: 20pt;
+    font-weight: 600;
+    border-radius: 100px;
+    border: none;
+    padding: 5px 15px;
+    max-width: 200px;
+    min-width: 120px;
+    height: 80px;
+    margin: 20px 5%;
+}
+
+.onoff-button {
+    box-shadow: 0 0 30px rgba(0, 255, 0, 1);
+    transition: box-shadow 0.1s;
+}
+
+.offon-button {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.25);
+}
+
+.offon-button:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+/* Search */
+
+#btn-submit {
+    margin: 50px auto;
+    width: 40%;
+    min-width: 200px;
+    max-width: 800px;
+    padding: 30px;
+    border-radius: var(--border-radius);
+    background-color: white;
+    vertical-align: middle;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 10px 0px var(--main-color);
+    transition: all 0.1s;
+}
+#btn-submit:hover {
+    color: var(--main-color);
+    background-color: var(--main-light-color);
+}
+#btn-submit:active {
+    box-shadow: 0 0 2px var(--main-color);
+    transform: translateY(8px);
+}
+.submit-icon {
+    display: block;
+    font-size: 80pt !important;
+    line-height: 0;
+}
+.submit-title {
+    font-size: 20pt;
+    font-weight: 600;
+    margin-top: 30px;
+}
+.submit-desc {
+    font-size: 12pt;
+    font-weight: 200;
+    margin-top: -10px;
+}

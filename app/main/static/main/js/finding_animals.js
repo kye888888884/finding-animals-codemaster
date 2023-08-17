@@ -1,34 +1,54 @@
-const btn = document.getElementById("btn");
-const btn_prev = document.getElementById("btn-prev");
-const btn_next = document.getElementById("btn-next");
-const total_page = document.getElementById("total-page");
+const btn = document.getElementById("btn-submit");
 const result_container = document.getElementById("result-container");
-const input_classification = document.getElementById("classification");
 const input_species = document.getElementById("species");
 const image_base_url = "http://www.daejeon.go.kr/FileUpload/ANI/";
 
-btn.addEventListener("click", () => {
-    $("#page").text("1");
-    search();
-});
-btn_prev.addEventListener("click", () => {
-    let page = parseInt($("#page").text());
-    if (page > 1) {
-        $("#page").text(page - 1);
-        search();
-    }
-});
-btn_next.addEventListener("click", () => {
-    let page = parseInt($("#page").text());
-    let total_page = parseInt($("#total-page").text());
-    if (page < total_page) {
-        $("#page").text(page + 1);
-        search();
-    }
-});
+can_loading = false;
+page_count = 1;
 
-// #classification의 값이 바뀌면 #species의 값을 바꿔준다.
-input_classification.addEventListener("change", change_species);
+window.onload = function () {
+    btn.addEventListener("click", () => {
+        search();
+    });
+
+    $(".onoff-button").click(function () {
+        $(this).toggleClass("offon-button");
+    });
+
+    $("#status").on("change", function () {
+        search(false, true);
+    });
+    $("#gu").on("change", function () {
+        search(false, true);
+    });
+
+    $("input:radio[name=classification]").on("change", function () {
+        change_species();
+    });
+    change_species();
+};
+
+setInterval(function () {
+    if (detectBottom() && can_loading) {
+        can_loading = false;
+        setTimeout(function () {
+            console.log("bottom");
+            search(true);
+            can_loading = true;
+        }, 500);
+    }
+}, 200);
+
+function detectBottom() {
+    var scrollTop = $(window).scrollTop();
+    var innerHeight = $(window).innerHeight();
+    var scrollHeight = $("body").prop("scrollHeight");
+    if (scrollTop + innerHeight >= scrollHeight - 80) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
 function add_option(select, value, text) {
     let option = document.createElement("option");
@@ -38,7 +58,7 @@ function add_option(select, value, text) {
 }
 
 function change_species() {
-    let classification = input_classification.value;
+    let classification = $("input:radio[name=classification]:checked").val();
     input_species.innerHTML = "";
     spec_list = specs[classification - 1];
     add_option(input_species, "", "전체");
@@ -47,27 +67,38 @@ function change_species() {
     }
 }
 
-change_species();
+function search(is_append = false, is_filter = false) {
+    if (!is_append) {
+        result_container.innerHTML = "";
+        $("#search-container").removeAttr("hidden");
+        if (!is_filter) {
+            $("html, body").animate(
+                { scrollTop: $(document).height() - 300 },
+                1000
+            );
+        }
+    }
 
-function search() {
+    can_loading = true;
+
     let csrftoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
 
     haircolors = [];
     let i = 0;
-    $("input.colors").each(function () {
-        haircolors.push($(this).is(":checked"));
+    $("button.color").each(function () {
+        haircolors.push(!$(this).hasClass("offon-button"));
     });
 
     let data = {
-        classification: $("#classification").val(),
-        gender: $("#gender").val(),
+        classification: $("input:radio[name=classification]:checked").val(),
+        gender: $("input:radio[name=gender]:checked").val(),
         gu: $("#gu").val(),
         species: $("#species").val(),
         haircolors: haircolors,
         age: $("#age").val(),
         weight: $("#weight").val(),
         status: $("#status").val(),
-        page: $("span#page").text(),
+        page: page_count,
     };
 
     console.log(data);
@@ -80,9 +111,11 @@ function search() {
         data: JSON.stringify(data),
     }).done(function (data) {
         console.log(data);
-        total_page.innerText = (data.total_count / 5).toFixed(0);
 
-        result_container.innerHTML = "";
+        if (!is_append) {
+            page_count = 1;
+        }
+        page_count += 1;
         result = JSON.parse(data.result);
         for (let i = 0; i < data.count; i++) {
             let src;

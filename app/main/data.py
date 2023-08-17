@@ -1,7 +1,7 @@
 import pandas as pd
 from .models import Animals, Species
 
-PAGE_COUNT = 5
+PAGE_COUNT = 12
 status_dict = {
     "1": "[1]", # 공고중
     "2": "[2]", # 입양가능

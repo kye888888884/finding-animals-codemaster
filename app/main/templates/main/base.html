@@ -4,8 +4,14 @@
     <head>
         <meta charset="utf-8">
         <title>Finding Animals</title>
+        <link rel="shortcut icon" href="{% static 'main/images/favicon.ico' %}">
         <link rel="stylesheet" href="{% static 'main/css/style.css' %}" />
-        <script defer src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <link rel="stylesheet" href="{% static 'main/css/inputs.css' %}" />
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Gothic+A1:wght@100;200;300;400;500;600;700;800&display=swap');
+        </style>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+        <script type="text/javascript" defer src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     </head>
     <body>
         {% csrf_token %}
