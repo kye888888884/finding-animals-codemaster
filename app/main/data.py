@@ -1,4 +1,5 @@
 import pandas as pd
+from .models import Animals, Species
 
 PAGE_COUNT = 5
 status_dict = {
@@ -10,37 +11,62 @@ status_dict = {
 
 # 유기동물 데이터를 불러오는 클래스
 class AnimalData:
-    def __init__(self, data_path):
-        self.data_path = data_path
-        self.data = None
-        self.load_data()
-    
-    def load_data(self):
-        self.data = pd.read_csv(self.data_path + "animals_data.csv")
+    def __init__(self, haircolors):
+        self.haircolors = haircolors
+        pass
 
     def search(self, params):
         print(params)
-        expr = f"classification == {params['classification']}"
+        query = Animals.objects.all()
+        # 대분류 (개, 고양이, 기타)
+        query = query.filter(classification=params["classification"])
+        # expr = f"classification == {params['classification']}"
+        # 성별 구분
         if params["gender"] != "0":
-            expr += f" and gender == {params['gender']}"
-        if params["gu"] != "0":
-            expr += f" and gu == {params['gu']}"
-        if params["species"] != "":
-            expr += f" and species == '{params['species']}'"
-        # if params["haircolor"] != "":
-        #     expr += f" and hairColor == '{params['haircolor']}'"
-        if params["status"] != "0":
-            expr += f" and adoptionStatusCd in {status_dict[params['status']]}"
+            query = query.filter(gender=params["gender"])
+        #     expr += f" and gender == {params['gender']}"
+        # 지역 구분
+        # if params["gu"] != "0":
+        #     expr += f" and gu == {params['gu']}"
+        # 종 구분
+        # if params["species"] != "":
+        #     expr += f" and species == '{params['species']}'"
+        # 공고 상태
+        # if params["status"] != "0":
+        #     expr += f" and adoptionStatusCd in {status_dict[params['status']]}"
+        # 털색 구분
+
+        # 날짜 최신순 정렬
+        query = query.order_by("-rescue_date")
         
-        df_q = self.data.query(expr)
-        # rescueDate를 기준으로 내림차순 정렬
-        df_q = df_q.sort_values(by=["rescueDate"], ascending=False)
-        total_count = len(df_q)
-        
+        # exprs_color = []
+        # for i, (key, value) in enumerate(self.haircolors.items()):
+        #     if params["haircolors"][i]:
+        #         exprs_color.append(f"{key} == 1")
+        # if len(exprs_color) > 0:
+        #     expr += " and ("
+        #     expr += " or ".join(exprs_color)
+        #     expr += ")"
+        # print(expr)
+            
+        # query 실행
         p = (int(params["page"]) - 1) * PAGE_COUNT
-        df_q = df_q.iloc[p:p + PAGE_COUNT]
-        count = len(df_q)
+        query_set = query.values()
+        total_count = query_set.count()
+        query_set = query_set[p:p + PAGE_COUNT]
+        count = query_set.count()
         
-        result = df_q.to_json(orient="records")
-        return result, count, total_count
+        # queryset to list
+        query_set = list(query_set)
+        # list to json
+        df = pd.DataFrame(query_set)
+        
+        species = Species.objects.all().values()
+        df_species = pd.DataFrame(species)
+        df_species = df_species[["id", "name_kr"]]
+        dict_species = df_species.set_index("id").to_dict()["name_kr"]
+        df["species"] = df["species"].map(dict_species)
+        df["rescue_date"] = df["rescue_date"].astype(str)
+        json = df.to_json(orient="records")
+        return json, count, total_count
 

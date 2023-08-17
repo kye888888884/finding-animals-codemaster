@@ -40,22 +40,20 @@
       </div>
       <br />
       <div class="options">
-        털 색&nbsp;<select id="haircolor">
-          <option value="">전체</option>
-          {% for x in haircolor %}
-            <option value="{{x}}">{{ x }}</option>
+        털 색&nbsp;
+        {% for key, value in haircolors.items %}
+        <input type="checkbox" class="colors" name="{{key}}" id="{{ forloop.counter0 }}">{{value}}
           {% endfor %}
-        </select>
       </div>
       <br />
-      <div class="options">
+      {% comment %} <div class="options">
         나이(세)&nbsp;<input type="number" name="age" id="age" placeholder="미구현" />
       </div>
       <br />
       <div class="options">
         몸무게(kg)&nbsp;<input type="number" name="weight" id="weight" placeholder="미구현" />
-      </div>
-      <br />
+      </div> 
+      <br /> {% endcomment %}
       <div class="options">
         상태&nbsp;<select name="status" id="status">
           <option value="1">공고중</option>

@@ -70,4 +70,4 @@ def get_dataframe():
 
 # csv 저장
 df = get_dataframe()
-df.to_csv('./data/animals_data.csv', index=False, encoding='utf-8-sig')
+df.to_csv('./data/animals_raw_data.csv', index=False, encoding='utf-8-sig')

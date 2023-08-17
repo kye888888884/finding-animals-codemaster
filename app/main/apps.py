@@ -1,7 +1,15 @@
 from django.apps import AppConfig
-from .data import AnimalData
+
+init_db = True
 
 class MainConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
     name = "main"
-    animal_data = AnimalData("main/data/")
+    haircolors = {
+        'colorWhite': "흰색",
+        'colorBlack': "검은색",
+        'colorBrown': "갈색",
+        'colorYellow': "황색",
+        'colorGray': "회색",
+        'colorOther': "기타",
+    }
