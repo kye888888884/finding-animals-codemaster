@@ -2,6 +2,7 @@
 {% load static %}
 {% block page_content %}
   <div id="no-image" hidden>{% static "main/images/no-image.png"%}</div>
+  <canvas id="upload-canvas" width="224px" height="224px" hidden></canvas>
   <nav class="navbar">
     <div class="nav-links">
         <div class="nav" id="title">
@@ -69,7 +70,7 @@
       <div class="input-container">
         <div class="input-title">사진을 올려주세요</div>
         <div class="upload-container">
-          <input type="file" name="file" id="file" hidden>
+          <input type="file" name="imagefile" id="file" accept="image/*" onchange="loadFile(this)" hidden>
           <label for="file" class="image1">
             <div class="line">
               <span class="upload-icon material-symbols-outlined">upload_file</span>
@@ -81,12 +82,16 @@
             <div class="upload-desc">동물의 정보를 직접 입력합니다</div>
           </button>
         </div>
+        <div id="image-container"></div>
       </div>
 
       <div class="input-container">
-        <div class="input-title">어떤 종인가요?</div>
+        <div class="input-title">종을 선택해주세요</div>
         <select id="species">
         </select>
+        <div class="add-desc" hidden>종을 감지했어요. 이 종이 아닌가요?</div>
+        <div id="add-container">
+        </div>
       </div>
 
       <div class="input-container">
@@ -120,7 +125,7 @@
         </div>
       </div>
 
-      <div class="input-container">
+      <div class="input-container" hidden>
         <div class="input-title">어떤 색깔의 털을 가지고 있나요?</div>
         <div class="input-desc">(중복 선택 가능)</div>
         <div class="color-container">
@@ -178,12 +183,33 @@
     </div>
 
     <div id="result-container"></div>
-    <div id="loading-container">
-      <div class="loading">
-        불러오는 중입니다...
-      </div>
+    <div id="no-result">
+      검색 결과가 없습니다
+    </div>
+    <div id="loading">
+      불러오는 중입니다...
     </div>
   </div>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer">
+        <div class="footer-title">TEAM</div>
+        <div class="footer-desc">JeonNam University,</div>
+        <div class="footer-desc">Smart Computung Lab. 901</div>
+      </div>
+      <div class="footer">
+        <div class="footer-title">CONTACT</div>
+        <div class="footer-desc">
+          <span class="icon material-symbols-outlined">mail</span>
+          <a href="mailto:k37237280@gmail.com" class="footer-link">k37237280@gmail.com</a>
+        </div>
+        <div class="footer-desc">
+          <span class="icon material-symbols-outlined">code</span>
+          <a href="https://github.com/kye888888884/finding-animals-codemaster" class="footer-link">Github Page</a>
+        </div>
+      </div>
+  </footer>
   <script type="text/javascript" src="{% static "main/js/animals_data.js" %}"></script>
   <script type="text/javascript" src="{% static "main/js/finding_animals.js" %}"></script>
 {% endblock %}

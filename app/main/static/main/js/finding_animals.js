@@ -2,9 +2,11 @@ const btn = document.getElementById("btn-submit");
 const result_container = document.getElementById("result-container");
 const input_species = document.getElementById("species");
 const image_base_url = "http://www.daejeon.go.kr/FileUpload/ANI/";
+const canvas = document.getElementById("upload-canvas");
 
 can_loading = false;
 page_count = 1;
+const page_num = 12;
 
 window.onload = function () {
     btn.addEventListener("click", () => {
@@ -38,6 +40,75 @@ setInterval(function () {
         }, 500);
     }
 }, 200);
+
+function loadFile(input) {
+    var file = input.files[0];
+    var newImage = document.createElement("img");
+    url = URL.createObjectURL(file);
+    newImage.src = url;
+    newImage.style.height = "224px";
+    newImage.className = "upload-img";
+    const img = new Image();
+    img.src = url;
+    img.onload = function () {
+        $("#image-container").html(newImage);
+        $("#image-container").css("margin-top", "50px");
+
+        let csrftoken = document.getElementsByName("csrfmiddlewaretoken")[0]
+            .value;
+
+        // 캔버스를 가져와서 이미지를 그린다음에
+        var ctx = canvas.getContext("2d");
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        // 224x224 크기로 캔버스에 그리기
+        ctx.drawImage(img, 0, 0, 224, 224);
+
+        // 이미지를 base64로 인코딩한다.
+        var dataURL = canvas.toDataURL();
+
+        let formData = new FormData();
+        formData.append(
+            "classification",
+            $("input:radio[name=classification]:checked").val()
+        );
+        formData.append("image_data", dataURL);
+
+        console.log(formData);
+
+        $.ajax({
+            type: "POST",
+            url: "/upload/",
+            headers: { "X-CSRFToken": csrftoken },
+            cache: false,
+            data: formData,
+            processData: false,
+            contentType: false,
+        }).done(function (data) {
+            $(".add-desc").removeAttr("hidden");
+            result = data.result;
+            // Eng to Kor
+            for (let i = 0; i < result.length; i++) {
+                result[i] = eng_to_kor[result[i]];
+            }
+            top_result = result[0];
+            console.log(top_result);
+            $("#add-container").html("");
+            $("#species").val(top_result);
+            for (let i = 1; i <= 3; i++) {
+                let div = document.createElement("div");
+                div.className = "add-item";
+                div.innerHTML = `
+                <button class="add-button">${result[i]}</button>
+                `;
+                $("#add-container").append(div);
+            }
+            $(".add-button").click(function () {
+                $("#species").val($(this).text());
+            });
+        });
+    };
+}
 
 function detectBottom() {
     var scrollTop = $(window).scrollTop();
@@ -79,8 +150,6 @@ function search(is_append = false, is_filter = false) {
         }
     }
 
-    can_loading = true;
-
     let csrftoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
 
     haircolors = [];
@@ -89,15 +158,22 @@ function search(is_append = false, is_filter = false) {
         haircolors.push(!$(this).hasClass("offon-button"));
     });
 
+    species = getKeyByValue(id_to_name, $("#species").val());
+    if (species == undefined) {
+        species = 0;
+    }
+
     let data = {
-        classification: $("input:radio[name=classification]:checked").val(),
-        gender: $("input:radio[name=gender]:checked").val(),
-        gu: $("#gu").val(),
-        species: $("#species").val(),
+        classification: Number(
+            $("input:radio[name=classification]:checked").val()
+        ),
+        gender: Number($("input:radio[name=gender]:checked").val()),
+        gu: Number($("#gu").val()),
+        species: Number(species),
         haircolors: haircolors,
-        age: $("#age").val(),
+        age: Number($("#age").val()),
         weight: $("#weight").val(),
-        status: $("#status").val(),
+        status: Number($("#status").val()),
         page: page_count,
     };
 
@@ -111,11 +187,38 @@ function search(is_append = false, is_filter = false) {
         data: JSON.stringify(data),
     }).done(function (data) {
         console.log(data);
+        console.log(page_count);
 
-        if (!is_append) {
+        const no_additional_result = data.total_count < page_num * page_count;
+
+        if (data.count == 0) {
+            // 검색 결과가 없을 경우
             page_count = 1;
+        } else if (!is_append) {
+            // 로딩이 아닌 검색일 경우
+            page_count = 2;
+        } else {
+            // 로딩일 경우
+            page_count += 1;
         }
-        page_count += 1;
+
+        // 검색 결과가 없으면 no-result를 보여준다.
+        if (data.count == 0 && !is_append) $("#no-result").show();
+        else $("#no-result").hide();
+
+        // 더 이상 검색 결과가 없으면 로딩을 숨긴다.
+        if (no_additional_result) {
+            $("#loading").hide();
+            can_loading = false;
+        } else {
+            $("#loading").show();
+            can_loading = true;
+        }
+
+        if (data.count == 0) {
+            return;
+        }
+
         result = JSON.parse(data.result);
         for (let i = 0; i < data.count; i++) {
             let src;
@@ -126,8 +229,8 @@ function search(is_append = false, is_filter = false) {
             }
 
             // descMain: 종, 믹스여부, 공고 상태, 발견 날짜
-            let descMain = result[i].species;
-            if (result[i].species != "믹스" && result[i].is_mix == 1) {
+            let descMain = id_to_name[result[i].species];
+            if (descMain != "믹스" && result[i].is_mix == 1) {
                 descMain += "(믹스)";
             }
             descMain += ` / ${status_list[result[i].status - 1]}`;

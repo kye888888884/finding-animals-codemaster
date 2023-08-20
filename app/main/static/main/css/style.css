@@ -181,6 +181,7 @@ input:focus {
 
 .result {
     flex: 1 1 25%;
+    margin: 20px;
 }
 
 .loading {
@@ -202,9 +203,53 @@ input:focus {
     margin: 0 30px;
 }
 
+#no-result {
+    font-size: 20pt;
+    margin: 30px;
+}
+
+#loading {
+    font-size: 20pt;
+    margin: 30px;
+}
+
 .icon {
     font-size: 20px !important;
     line-height: 0 !important;
     position: relative;
     top: 4px;
+}
+
+/* Footer */
+
+footer {
+    width: 100%;
+    padding: 40px 0;
+    background: #0d5288;
+    color: #fff;
+    box-shadow: #0004 0 0 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: normal;
+    width: 80%;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.footer-title {
+    font-size: 14pt;
+    font-weight: 300;
+    margin-bottom: 20px;
+}
+
+footer a {
+    color: #fff;
+    text-decoration: none;
 }

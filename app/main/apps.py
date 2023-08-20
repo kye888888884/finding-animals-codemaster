@@ -1,4 +1,5 @@
 from django.apps import AppConfig
+from .deepmodel import DeepModel
 
 init_db = True
 
@@ -13,3 +14,4 @@ class MainConfig(AppConfig):
         'colorGray': "회색",
         'colorOther': "기타",
     }
+    deepModel = None#DeepModel()

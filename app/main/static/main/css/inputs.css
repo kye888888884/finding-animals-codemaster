@@ -107,6 +107,11 @@
     margin-top: 10px;
 }
 
+.upload-img {
+    border-radius: 30px;
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.25);
+}
+
 /* Species */
 select {
     width: 200px;
@@ -128,6 +133,30 @@ select:focus {
     border-radius: 10px;
     outline: 3px solid #f8e4ff;
     border-radius: 10px;
+}
+
+#add-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+.add-desc {
+    font-size: 14pt;
+    font-weight: 400;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+.add-button {
+    font-size: 14pt;
+    font-weight: 600;
+    background-color: #0000;
+    border: none;
+    cursor: pointer;
+    color: var(--main-color);
+}
+.add-button:hover {
+    color: var(--main-light-color);
 }
 
 /* Hair Color */
