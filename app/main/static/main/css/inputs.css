@@ -20,6 +20,16 @@
     margin-top: 10px;
 }
 
+#upload-input,
+#species-input,
+#gender-input,
+#hair-input,
+#btn-submit {
+    height: 0;
+    opacity: 0;
+    transition: all 0.5s;
+}
+
 /* Cut button */
 
 .cut-container {

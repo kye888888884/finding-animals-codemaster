@@ -11,6 +11,27 @@ const page_num = 12;
 let pred = []; // 유사도 검색을 위한 행렬
 let on_sim = false; // 유사도 검색 여부
 
+let on_inputs = [false, false, false, false]; // 검색 조건 입력 여부
+
+let top_result = "";
+
+function show(id) {
+    $(id).css("display", "block");
+    $(id).css("height", "100%");
+    $(id).css("opacity", "1");
+}
+
+function scroll(id, idx) {
+    if (on_inputs[idx]) {
+        return;
+    }
+    on_inputs[idx] = true;
+    window.scrollBy({
+        top: $(id).outerHeight(true),
+        behavior: "smooth",
+    });
+}
+
 window.onload = function () {
     btn.addEventListener("click", () => {
         search();
@@ -28,8 +49,28 @@ window.onload = function () {
     });
 
     $("input:radio[name=classification]").on("change", function () {
+        if ($(this).val() != 3) {
+            show("#upload-input");
+        } else {
+            show("#gender-input");
+        }
+        scroll("#class-input", 0);
         change_species();
     });
+
+    $("button.image2").click(function () {
+        show("#gender-input");
+        scroll("#upload-input", 1);
+    });
+
+    $("input:radio[name=gender]").on("change", function () {
+        show("#species-input");
+        show("#btn-submit");
+        scroll("#gender-input", 2);
+        change_species();
+        $("#species").val(top_result);
+    });
+
     change_species();
 };
 
@@ -44,6 +85,7 @@ setInterval(function () {
 }, 200);
 
 function loadFile(input) {
+    show("#gender-input");
     var file = input.files[0];
     var newImage = document.createElement("img");
     url = URL.createObjectURL(file);
@@ -96,7 +138,7 @@ function loadFile(input) {
                 result[i] = eng_to_kor[result[i]];
             }
             top_result = result[0];
-            console.log(top_result);
+            // console.log(top_result);
             $("#add-container").html("");
             $("#species").val(top_result);
             for (let i = 1; i <= 3; i++) {
@@ -148,10 +190,9 @@ function search(is_append = false, is_filter = false) {
         result_container.innerHTML = "";
         $("#search-container").removeAttr("hidden");
         if (!is_filter) {
-            $("html, body").animate(
-                { scrollTop: $(document).height() - 300 },
-                1000
-            );
+            document
+                .getElementById("result-container")
+                .scrollIntoView({ block: "start", behavior: "smooth" });
         }
     }
 
