@@ -18,14 +18,16 @@ def index(request):
 
     return render(request, "main/index.html", context)
 
+# 유기동물 검색
 def search(request):
     if request.method == "POST":
         animalData = AnimalData(MainConfig.haircolors)
         params = json.loads(request.body)
-        data, count, total_count = animalData.search(params)
-        return JsonResponse({"result": data, "count": count, "total_count": total_count}, safe=False)
 
-# Create your views here.
+        data, count, total_count, sim_count = animalData.search(params)
+        return JsonResponse({"result": data, "count": count, "total_count": total_count, "sim_count": sim_count} , safe=False)
+
+# 이미지 전처리
 def process_image(imageFile):
     imageFile = base64.b64decode(imageFile.split(",")[1])
     img = Image.open(io.BytesIO(imageFile))
@@ -34,6 +36,7 @@ def process_image(imageFile):
     img = img.reshape(224, 224, 3)
     return img
 
+# 업로드된 이미지 처리
 def upload(request):
     if request.method == "POST":
         imageFile = request.POST.get("image_data", "")
@@ -44,23 +47,18 @@ def upload(request):
         
         # Process image
         img = process_image(imageFile)
-        print(img.shape)
+        # print(img.shape)
 
-        result = MainConfig.deepModel.predictRank(img, is_cat=(classification == "2"))
+        # Get prediction
+        pred = MainConfig.deepModel.predict(img, is_cat=(classification == "2"))
 
-        df = pd.DataFrame(result, columns=["name"])
-        
-        # Eng to Kor
-        # species = Species.objects.all().values()
-        # df_species = pd.DataFrame(species)
-        # df_species = df_species[["name", "name_kr"]]
-        # dict_species = df_species.set_index("name").to_dict()["name_kr"]
-        # df["name"] = df["name"].map(dict_species)
+        # Get list of rank
+        ranks = MainConfig.deepModel.get_rank(pred, is_cat=(classification == "2"))
 
         # dataframe to list
-        result = df["name"].tolist()
+        df = pd.DataFrame(ranks, columns=["name"])
+        ranks = df["name"].tolist()
 
-        # list to dict
-        # result = dict(zip(range(len(result)), result))
+        pred = pred[1][0].tolist()
 
-        return JsonResponse({"result": result, "classification": classification}, safe=False)
+        return JsonResponse({"ranks": ranks, "predict": pred, "classification": classification}, safe=False)

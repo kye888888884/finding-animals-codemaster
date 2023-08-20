@@ -4,9 +4,12 @@ const input_species = document.getElementById("species");
 const image_base_url = "http://www.daejeon.go.kr/FileUpload/ANI/";
 const canvas = document.getElementById("upload-canvas");
 
-can_loading = false;
-page_count = 1;
+let can_loading = false;
+let page_count = 1;
 const page_num = 12;
+
+let pred = []; // 유사도 검색을 위한 행렬
+let on_sim = false; // 유사도 검색 여부
 
 window.onload = function () {
     btn.addEventListener("click", () => {
@@ -34,7 +37,6 @@ setInterval(function () {
     if (detectBottom() && can_loading) {
         can_loading = false;
         setTimeout(function () {
-            console.log("bottom");
             search(true);
             can_loading = true;
         }, 500);
@@ -86,7 +88,9 @@ function loadFile(input) {
             contentType: false,
         }).done(function (data) {
             $(".add-desc").removeAttr("hidden");
-            result = data.result;
+            pred = data.predict;
+            on_sim = true;
+            result = data.ranks;
             // Eng to Kor
             for (let i = 0; i < result.length; i++) {
                 result[i] = eng_to_kor[result[i]];
@@ -114,7 +118,7 @@ function detectBottom() {
     var scrollTop = $(window).scrollTop();
     var innerHeight = $(window).innerHeight();
     var scrollHeight = $("body").prop("scrollHeight");
-    if (scrollTop + innerHeight >= scrollHeight - 80) {
+    if (scrollTop + innerHeight >= scrollHeight - 400) {
         return true;
     } else {
         return false;
@@ -140,6 +144,7 @@ function change_species() {
 
 function search(is_append = false, is_filter = false) {
     if (!is_append) {
+        page_count = 1;
         result_container.innerHTML = "";
         $("#search-container").removeAttr("hidden");
         if (!is_filter) {
@@ -175,9 +180,14 @@ function search(is_append = false, is_filter = false) {
         weight: $("#weight").val(),
         status: Number($("#status").val()),
         page: page_count,
+        on_sim: on_sim,
+        pred: on_sim ? JSON.stringify(pred) : 0,
     };
 
-    console.log(data);
+    // console.log(data);
+
+    $("#no-result").hide();
+    $("#loading").show();
 
     $.ajax({
         type: "POST",
@@ -186,10 +196,11 @@ function search(is_append = false, is_filter = false) {
         cache: false,
         data: JSON.stringify(data),
     }).done(function (data) {
-        console.log(data);
-        console.log(page_count);
+        // console.log(data);
 
         const no_additional_result = data.total_count < page_num * page_count;
+
+        count_stack = page_num * (page_count - 1);
 
         if (data.count == 0) {
             // 검색 결과가 없을 경우
@@ -247,6 +258,9 @@ function search(is_append = false, is_filter = false) {
             }
             if (result[i].weight != null) {
                 descSub += ` / ${result[i].weight}kg`;
+            }
+            if (i + count_stack < data.sim_count) {
+                descSub += " / AI 검색";
             }
 
             let div = document.createElement("div");

@@ -80,26 +80,34 @@ class DeepModel():
             36: 'yorkshireTerrier'
         }
 
-    def predictRank(self, img, is_cat=False):
+    def predict(self, img, is_cat=False):
         img_tensor = img
         img_tensor /= 255
         img_tensor = np.expand_dims(img_tensor, axis=0)
         test_image = img_tensor
         
-        result = []
         if is_cat:
             ## predict
             predictBreed = self.cat_model.predict(test_image)
-            tmp = 12
+            
         else:
             predictBreed = self.dog_model.predict(test_image)
-            tmp = 36
         
-        array = predictBreed[0][0]
+        return predictBreed
+
+    def get_rank(self, pred, is_cat=False):
+        if is_cat:
+            tmp = 12
+        else:
+            tmp = 36
+
+        array = pred[0][0]
         temp = array.argsort()
         ranks = np.empty_like(temp)
         ranks[temp] = np.arange(len(array))
         ranks = list(ranks)
+    
+        result = []
 
         if is_cat:
             for i in range(len(self.pred2labelCat)):
@@ -110,4 +118,8 @@ class DeepModel():
                 result.append(self.pred2labelDog[ranks.index(tmp)])
                 tmp -=1
         
+        return result
+    
+    def get_similarity(self, ranks, is_cat=False):
+        result = []
         return result
